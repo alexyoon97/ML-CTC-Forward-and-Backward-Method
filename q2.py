@@ -1,14 +1,4 @@
-from nltk.corpus import cmudict
 from typing import Sequence
-import nltk
-
-# Load the CMU Pronouncing Dictionary
-nltk.download('cmudict')
-
-# Initialize the CMU Pronouncing Dictionary
-pronouncing_dict = cmudict.dict()
-
-
 def phonemes_to_words(words: Sequence[str], phoneme_list: Sequence[str]):
     # Find all possible combinations of words that can be formed using the given list of phonemes.
 
@@ -25,7 +15,6 @@ def phonemes_to_words(words: Sequence[str], phoneme_list: Sequence[str]):
 # Iterate first loop to look for first elements
 # eliminate used phoneme for first element
 # Save the remaining phoneme for later
-
     for i in words:
         if all(element in temp_phone for element in i[1]):
             for phone in i[1]:
@@ -60,15 +49,20 @@ def find_possible_words(phonemes: Sequence[str]):
 
     # Returns:
     #     A list of words that can be formed using the provided phonemes.
-
-    words = []
-    for word, pronunciations in pronouncing_dict.items():
-        for pronounce in pronunciations:
-            if all(element in phonemes for element in pronounce):
-                words.append([word, pronounce])
-    return words
-
-
+    
+    with open('dictionary.csv', 'r+') as datasheet:
+        words = []
+        pos_words = []
+        list_phone = []
+        for line in datasheet:
+            split = line.split(',')
+            split[-1] = split[-1].replace('\n','')
+            words.append(split)
+        for word in words:
+            list_phone = word[1 :]
+            if all(element in phonemes for element in list_phone):
+                pos_words.append([word[0], list_phone])
+        return pos_words
 # Example usage
 phoneme_list = ["DH", "EH1", "R", "DH", "EH1", "R"]
 pos_words = find_possible_words(phoneme_list)
