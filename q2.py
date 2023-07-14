@@ -18,16 +18,16 @@ def phonemes_to_words(words: Sequence[str], phoneme_list: Sequence[str]):
                 temp_phone.remove(phone)
             remaining_phone = temp_phone[:]
             for y in words:
-                if i != y:
-                    if all(element in remaining_phone for element in y[1]):
-                        array.append(y[0])
-                        for phone in remaining_phone:
-                            remaining_phone.remove(phone)
-                    else:
-                        array.insert(0, i[0])
-                        combinations_words.append(array)
-                        remaining_phone = temp_phone[:]
-                        array = []
+                if all(element in remaining_phone for element in y[1]):
+                    array.append(y[0])
+                    for phone in remaining_phone:
+                        remaining_phone.remove(phone)
+                else:
+                    array.insert(0, i[0])
+                    combinations_words.append(array)
+                    remaining_phone = temp_phone[:]
+                    array = []
+                    
             temp_phone = phoneme_list[:]
     return combinations_words
 
