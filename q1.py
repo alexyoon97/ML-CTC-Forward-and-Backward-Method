@@ -1,37 +1,50 @@
 import random
 from typing import Sequence
 
+RAIN_THRESHOLD = 0.3
+
+
 def generate_test_case():
+
+    # Generate a test case representing a year's worth of daily precipitation probabilities.
+
+    # Returns:
+    # A list of 365 floating-point numbers representing daily precipitation probabilities.
+
     test_case = []
-    for i in range(365):
-        rand = random.uniform(0, 1)
-        if rand > 0.3:
+    for _ in range(365):
+        random_prob = random.uniform(0, 1)
+        if random_prob > RAIN_THRESHOLD:
             test_case.append(random.uniform(0, 1))
         else:
             test_case.append(0)
     return test_case
 
+
 def prob_rain_more_than_n(p: Sequence[float], n: int) -> float:
-    total_day = len(p)
-    rainy_day_with_prob = []
 
-    # Collect days raining
-    for prob in p:
-        if prob != 0:
-            rainy_day_with_prob.append(prob)
-    print(len(rainy_day_with_prob))
-    # Find Average probability of precipitation
-    avg_prob = 0
-    for i in rainy_day_with_prob:
-        avg_prob += i
-    avg_prob = avg_prob / len(rainy_day_with_prob)
+    # Calculate the probability of having more than a specified number of rainy days in a year.
 
-    # Transfrom 'n' to decimal number and apply possibility of raining
-    total_prob = (n / total_day) * avg_prob
+    # Args:
+    # p: A sequence of floating-point numbers representing daily precipitation probabilities.
+    # n: The minimum number of rainy days to consider.
+
+    # Returns:
+    # The probability of having more than 'n' rainy days in a year.
+
+    total_days = len(p)
+    rainy_days_with_prob = [prob for prob in p if prob != 0]
+
+    if not rainy_days_with_prob:
+        return 0
+
+    avg_prob = sum(rainy_days_with_prob) / len(rainy_days_with_prob)
+    total_prob = (n / total_days) * avg_prob
 
     return total_prob
 
-#Example usage
+
+# Example usage
 while True:
     try:
         n = int(input("Minimum rainy day: "))
