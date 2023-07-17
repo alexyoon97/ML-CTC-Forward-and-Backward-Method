@@ -41,7 +41,7 @@ def find_possible_words(phonemes: Sequence[str]):
     # Returns:
     #     A list of words that can be formed using the provided phonemes.
         
-    with open('dictionary.csv', 'r+') as datasheet:
+    with open('dictionary.csv', 'r') as datasheet:
         words = []
         pos_words = []
         list_phone = []
