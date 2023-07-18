@@ -48,7 +48,6 @@ def backward(beta, T, C, inputs, labels):
 # def rescaling():
 
 # Purpose: To filter out e and repetitive characters from forward-backward algorithm output
-# Logic: Get the total probability of all paths going through sequence at timestep t by multiplying the alpha and beta value
 # def beam_search_decoding():
 
 inputs = np.array([[0.1, 0.2, 0.3, 0.4],
