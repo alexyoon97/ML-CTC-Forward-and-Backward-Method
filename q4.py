@@ -62,6 +62,7 @@ label_indices = np.arange(len(labels))
 time_seq, num_label = inputs.shape[0], labels.shape[0]
 result = ctc_dynamic_programming(inputs, label_indices, time_seq, num_label)
 
+#Prefix decoding method
 # Convert the output probabilities back to alphabet labels by picking most highest probability.
 output_labels = np.array([labels[np.argmax(result[t])] for t in range(result.shape[0])])
 print(output_labels)
