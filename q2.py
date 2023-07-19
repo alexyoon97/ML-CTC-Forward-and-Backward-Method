@@ -34,8 +34,8 @@ def phonemes_to_words(words: Sequence[str], phoneme_list: Sequence[str]):
     return combinations_words
 
 # Purpose: Find all possible words that can be formed using the given sequence of phonemes.
-#Logic: Open the dataset aka 'dictionary.csv' and remove all unnessessory elements such like '\n', ' '...
-#       keep all phonemes that contains phoneme we have
+#Logic: Open the dataset aka 'dictionary.csv' and remove all unnecessary elements such as     '\n', ' '...
+#       keep all phonemes that contain phoneme we have
 # Args:
 #     phonemes: A sequence of phonemes.
 # Returns:

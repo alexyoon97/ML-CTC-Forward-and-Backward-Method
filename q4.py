@@ -1,7 +1,7 @@
 import numpy as np
 
 # Purpose: To label unsegmented voice data, calculate all possible paths and sum their probabilities for the desire output.
-# Logic: Inittialize the 'alpha' and 'beta' matrix to store possibilties for forward and backward, assign value of the 'inputs'.
+# Logic: Initialize the 'alpha' and 'beta' matrix to store possibilities for forward and backward, assign value of the 'inputs'.
 #        Lastly, compute the CTC loss calculation for each timestep by multiplying 'alpha' and 'beta'.
 # Args:
 #   inputs: time sequence
