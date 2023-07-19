@@ -3,14 +3,13 @@ from typing import Sequence
 
 RAIN_THRESHOLD = 0.3
 
-
+#Purpose: Generate a test case representing a year's worth of daily precipitation probabilities.
+# Args:
+#     words: A sequence of words and their corresponding phonemes.
+#     phoneme_list: A sequence of phonemes.
+# Returns:
+# A list of 365 floating-point numbers representing daily precipitation probabilities.
 def generate_test_case():
-
-    # Generate a test case representing a year's worth of daily precipitation probabilities.
-
-    # Returns:
-    # A list of 365 floating-point numbers representing daily precipitation probabilities.
-
     test_case = []
     for _ in range(365):
         random_prob = random.uniform(0, 1)
@@ -20,18 +19,13 @@ def generate_test_case():
             test_case.append(0)
     return test_case
 
-
+# Purpose: Calculate the probability of having more than a specified number of rainy days in a year.
+# Args:
+#   p: A sequence of floating-point numbers representing daily precipitation probabilities.
+#   n: The minimum number of rainy days to consider.
+# Returns:
+#   The probability of having more than 'n' rainy days in a year.
 def prob_rain_more_than_n(p: Sequence[float], n: int) -> float:
-
-    # Calculate the probability of having more than a specified number of rainy days in a year.
-
-    # Args:
-    # p: A sequence of floating-point numbers representing daily precipitation probabilities.
-    # n: The minimum number of rainy days to consider.
-
-    # Returns:
-    # The probability of having more than 'n' rainy days in a year.
-
     total_days = len(p)
     rainy_days_with_prob = [prob for prob in p if prob != 0]
 
