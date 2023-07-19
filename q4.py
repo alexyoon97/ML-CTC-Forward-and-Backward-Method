@@ -1,7 +1,8 @@
 import numpy as np
 
-# Purpose: To label unsegmented voice data, calculate all possible paths and sum their probabilities for the correct output.
-# Logic: Executing dynamic programming to efficiently find the best path while reusing data
+# Purpose: To label unsegmented voice data, calculate all possible paths and sum their probabilities for the desire output.
+# Logic: Inittialize the 'alpha' and 'beta' matrix to store possibilties for forward and backward, assign value of the 'inputs'.
+#        Lastly, compute the CTC loss calculation for each timestep by multiplying 'alpha' and 'beta'.
 def ctc_dynamic_programming(inputs, labels, time_seq, num_label):
     
 # Initialize the forward variables
@@ -19,37 +20,36 @@ def ctc_dynamic_programming(inputs, labels, time_seq, num_label):
 # Compute the output probabilities
     output_probs = np.zeros((time_seq, num_label))
     for t in range(time_seq):
-        for c in range(num_label):
-            output_probs[t, c] = alpha[t, c] * beta[t, c]
+        for s in range(num_label):
+            output_probs[t, s] = alpha[t, s] * beta[t, s]
     return output_probs
 
 
 # Purpose: To determine all next possible paths from time and state
 #   By implementing a forward algorithm we are able to calculate the alpha value by multiplying the probability of every time sequence
 #   Alpha value can be used on next time sequence to find probability with less calculation by re-using alpha t -1 value
-# Logic: Iterate over the time steps from 1 to T and length of labels, update the alpha values based on the previous alpha value
-def forward(alpha, T, C, inputs, labels):
+# Logic: Iterate over the time steps from 1 to T and length of labels.
+#       Calculate the next probability based on the previous forward variables and input values
+def forward(alpha, T, S, inputs, labels):
     for t in range(1, T):
-        for c in range(C):
-            if c == 0:
-                alpha[t, c] = alpha[t-1, c] + inputs[t, labels[c]]
+        for s in range(S):
+            if s == 0:
+                alpha[t, s] = alpha[t-1, s] + inputs[t, labels[s]]
             else:
-                alpha[t, c] = alpha[t-1, c] + alpha[t-1, c-1] + inputs[t, labels[c]]
-def backward(beta, T, C, inputs, labels):
+                alpha[t, s] = alpha[t-1, s] + alpha[t-1, s-1] + inputs[t, labels[s]]
+# Logic: Iterate over the time steps from 1 to T and length of labels.
+#       Calculate the previous probability based on the t + 1 variables and input values
+def backward(beta, T, S, inputs, labels):
     for t in range(T-2, -1, -1):
-        for c in range(C-1, -1, -1):
-            if c == C-1:
-                beta[t, c] = beta[t+1, c] + inputs[t, labels[c]]
+        for s in range(S-1, -1, -1):
+            if s == S-1:
+                beta[t, s] = beta[t+1, s] + inputs[t, labels[s]]
             else:
-                beta[t, c] = beta[t+1, c] + beta[t+1, c+1] + inputs[t, labels[c]]
+                beta[t, s] = beta[t+1, s] + beta[t+1, s+1] + inputs[t, labels[s]]
 
+#Example usage
 
-# Purpose: The value of output will be too small after implementing a forward-backward algorithm, to prevent underflow rescale of the value
-# def rescaling():
-
-# Purpose: To filter out e and repetitive characters from forward-backward algorithm output
-# def beam_search_decoding():
-
+#Initialize nessessory variables
 inputs = np.array([[0.1, 0.2, 0.3, 0.4],
                    [0.5, 0.6, 0.7, 0.8],
                    [0.9, 1.0, 1.1, 1.2]])
@@ -58,9 +58,14 @@ labels = np.array(['A', 'B', 'C'])
 # Convert alphabet labels to integer indices
 label_indices = np.arange(len(labels))
 time_seq, num_label = inputs.shape[0], labels.shape[0]
+
 result = ctc_dynamic_programming(inputs, label_indices, time_seq, num_label)
 
 #Prefix decoding method
-# Convert the output probabilities back to alphabet labels by picking highest probability.
-output_labels = np.array([labels[np.argmax(result[t])] for t in range(result.shape[0])])
+#Pick highest probability, and convert back to desire label
+output_labels = []
+for t in range(result.shape[0]):
+  data =  [labels[np.argmax(result[t])] ]
+  output_labels.append(data)
+
 print(output_labels)
